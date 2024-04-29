@@ -7,6 +7,8 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String userIn;
+
+        //Home Screen
         do {
             System.out.println("Welcome. Please select an option: ");
             System.out.println("\tD) Add Deposit");
@@ -30,6 +32,6 @@ public class Main {
 
             }
 
-        } while (!userIn.equalsIgnoreCase("X"));
+        } while (!userIn.equalsIgnoreCase("X")); //Exits application
     }
 }
