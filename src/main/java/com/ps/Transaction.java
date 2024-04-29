@@ -1,6 +1,6 @@
 package com.ps;
 
-public class Ledger {
+public class Transaction {
 
     private String date;
     private String time;
@@ -8,7 +8,7 @@ public class Ledger {
     private String vendor;
     private float amount;
 
-    public Ledger(String date, String time, String description, String vendor, float amount) {
+    public Transaction(String date, String time, String description, String vendor, float amount) {
         this.date = date;
         this.time = time;
         this.description = description;
