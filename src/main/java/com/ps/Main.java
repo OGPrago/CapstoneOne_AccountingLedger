@@ -1,10 +1,9 @@
 package com.ps;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -32,8 +31,10 @@ public class Main {
 
             switch (userIn) {
                 case "D":
+                    main.addTransaction();
                     break;
                 case "P":
+                    main.addTransaction();
                     break;
                 case "L": //Ledger menu
                     String commandLedger;
@@ -159,5 +160,38 @@ public class Main {
             }
         }
         return negativeTransactions;
+    }
+
+    //Write transactions to transactions.txt that the user enters
+    private void addTransaction() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter transaction details:");
+        System.out.print("Description: ");
+        String description = scanner.nextLine();
+        System.out.print("Vendor: ");
+        String vendor = scanner.nextLine();
+        System.out.print("Amount: ");
+        float amount = scanner.nextFloat();
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("transactions.txt", true));
+            LocalDate currentDate = LocalDate.now();
+            LocalTime currentTime = LocalTime.now();
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+            String transactionLine = String.format("%s|%s|%s|%s|%.2f%n",
+                    currentDate.format(dateFormatter),
+                    currentTime.format(timeFormatter),
+                    description,
+                    vendor,
+                    amount);
+
+            writer.write(transactionLine);
+            System.out.println("Transaction recorded successfully.");
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
     }
 }
