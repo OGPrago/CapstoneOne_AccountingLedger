@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -50,15 +51,15 @@ public class Main {
 
                         switch (commandLedger) {
                             case "A":
-                                main.displayAllEntries(transactions);
+                                displayAllEntries(transactions);
                                 break;
                             case "D":
                                 ArrayList<Transaction> positiveTransactions = main.filterPositiveTransactions(transactions);
-                                main.displayAllEntries(positiveTransactions);
+                                displayAllEntries(positiveTransactions);
                                 break;
                             case "P":
                                 ArrayList<Transaction> negativeTransactions = main.filterNegativeTransactions(transactions);
-                                main.displayAllEntries(negativeTransactions);
+                                displayAllEntries(negativeTransactions);
                                 break;
                             case "R": //Reports menu
                                 int commandReports;
@@ -68,17 +69,23 @@ public class Main {
                                     System.out.println("\t1) Month To Date");
                                     System.out.println("\t2) Previous Month");
                                     System.out.println("\t3) Year To Date");
-                                    System.out.println("\t4) Previous Date");
+                                    System.out.println("\t4) Previous Year");
                                     System.out.println("\t5) Search by Vendor");
                                     System.out.println("\t0) Back");
                                     commandReports = scanner.nextInt();
 
                                     switch (commandReports) {
                                         case 1:
+                                            ArrayList<Transaction> monthToDateTransactions = main.filterByMonthToDate(transactions);
+                                            displayAllEntries(monthToDateTransactions);
                                             break;
                                         case 2:
+                                            ArrayList<Transaction> filterByPreviousMonth = main.filterByPreviousMonth(transactions);
+                                            displayAllEntries(filterByPreviousMonth);
                                             break;
                                         case 3:
+                                            ArrayList<Transaction> yearToDateTransactions = main.filterByYearToDate(transactions);
+                                            main.displayAllEntries(yearToDateTransactions);
                                             break;
                                         case 4:
                                             break;
@@ -193,5 +200,58 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
+    }
+
+    //Filter transactions by Month to Date
+    private ArrayList<Transaction> filterByMonthToDate(ArrayList<Transaction> transactions) {
+        ArrayList<Transaction> filteredTransactions = new ArrayList<>();
+        LocalDate currentDate = LocalDate.now();
+        LocalDate firstDayOfMonth = LocalDate.of(currentDate.getYear(), currentDate.getMonthValue(), 1);
+
+        for (Transaction transaction : transactions) {
+            LocalDate transactionDate = transaction.getDate();
+            if (!transactionDate.isBefore(firstDayOfMonth) && !transactionDate.isAfter(currentDate)) {
+                filteredTransactions.add(transaction);
+            }
+        }
+        return filteredTransactions;
+    }
+
+    //Filter transactions by previous month
+    private ArrayList<Transaction> filterByPreviousMonth(ArrayList<Transaction> transactions) {
+        ArrayList<Transaction> filteredTransactions = new ArrayList<>();
+
+        LocalDate currentDate = LocalDate.now();
+
+        LocalDate firstDayOfPreviousMonth = currentDate.minusMonths(1).withDayOfMonth(1);
+
+        LocalDate lastDayOfPreviousMonth = currentDate.minusMonths(1).withDayOfMonth(currentDate.minusMonths(1).lengthOfMonth());
+
+        for (Transaction transaction : transactions) {
+            LocalDate transactionDate = transaction.getDate();
+            if (!transactionDate.isBefore(firstDayOfPreviousMonth) && !transactionDate.isAfter(lastDayOfPreviousMonth)) {
+                filteredTransactions.add(transaction);
+            }
+        }
+
+        return filteredTransactions;
+    }
+
+    //Filter transactions by year to date
+    private ArrayList<Transaction> filterByYearToDate(ArrayList<Transaction> transactions) {
+        ArrayList<Transaction> filteredTransactions = new ArrayList<>();
+
+        LocalDate currentDate = LocalDate.now();
+
+        LocalDate firstDayOfCurrentYear = LocalDate.of(currentDate.getYear(), 1, 1);
+
+        for (Transaction transaction : transactions) {
+            LocalDate transactionDate = transaction.getDate();
+            if (!transactionDate.isBefore(firstDayOfCurrentYear) && !transactionDate.isAfter(currentDate)) {
+                filteredTransactions.add(transaction);
+            }
+        }
+
+        return filteredTransactions;
     }
 }
