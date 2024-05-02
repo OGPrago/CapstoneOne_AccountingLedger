@@ -4,3 +4,5 @@
 2024-05-01|15:13:20|UFC 300|ESPN+|-88.50
 2024-05-01|15:20:23|White Castle|White Castle|-30.00
 2024-05-02|13:09:17|Hair Gel|Target|-9.99
+2024-05-02|14:29:14|Lo Mato|Amazon|-29.95
+2024-05-02|14:32:32|John Wick Collection|Amazon|-30.57

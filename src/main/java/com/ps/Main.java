@@ -32,10 +32,10 @@ public class Main {
 
             switch (userIn) {
                 case "D":
-                    main.addTransaction();
+                    main.addDebit();
                     break;
                 case "P":
-                    main.addTransaction();
+                    main.addPayment();
                     break;
                 case "L": //Ledger menu
                     String commandLedger;
@@ -175,8 +175,8 @@ public class Main {
         return negativeTransactions;
     }
 
-    //Write transactions to transactions.txt that the user enters
-    private void addTransaction() {
+    //Write debit entries to transactions.txt that the user enters
+    private void addDebit() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter transaction details:");
@@ -205,6 +205,47 @@ public class Main {
             writer.close();
             transactions.add(new Transaction(currentDate, currentTime, description, vendor, amount));
             System.out.println("Transaction recorded successfully.");
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
+    //Write payment entries to transactions.txt that the user enters
+    private void addPayment() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter payment details:");
+        System.out.print("Description: ");
+        String description = scanner.nextLine();
+        System.out.print("Vendor: ");
+        String vendor = scanner.nextLine();
+        System.out.print("Amount: ");
+        float amount = scanner.nextFloat();
+
+        if (amount > 0) {
+            amount = -amount;
+        }
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("transactions.txt", true));
+            LocalDate currentDate = LocalDate.now();
+            LocalTime currentTime = LocalTime.now();
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+            String transactionLine = String.format("%s|%s|%s|%s|%.2f%n",
+                    currentDate.format(dateFormatter),
+                    currentTime.format(timeFormatter),
+                    description,
+                    vendor,
+                    amount);
+
+            writer.write(transactionLine);
+            writer.close();
+            System.out.println("Transaction recorded successfully.");
+
+            // Update the transactions list with the newly added transaction
+            transactions.add(new Transaction(currentDate, currentTime, description, vendor, amount));
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
