@@ -88,8 +88,14 @@ public class Main {
                                             main.displayAllEntries(yearToDateTransactions);
                                             break;
                                         case 4:
+                                            ArrayList<Transaction> previousYearTransactions = main.filterByPreviousYear(transactions);
+                                            main.displayAllEntries(previousYearTransactions);
                                             break;
                                         case 5:
+                                            System.out.println("Enter vendor to search:");
+                                            scanner.nextLine();
+                                            String vendor = scanner.nextLine();
+                                            displayAllEntries(vendorSearch(vendor));
                                             break;
                                         case 0:
                                             break;
@@ -196,6 +202,8 @@ public class Main {
                     amount);
 
             writer.write(transactionLine);
+            writer.close();
+            transactions.add(new Transaction(currentDate, currentTime, description, vendor, amount));
             System.out.println("Transaction recorded successfully.");
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
@@ -253,5 +261,35 @@ public class Main {
         }
 
         return filteredTransactions;
+    }
+
+    private ArrayList<Transaction> filterByPreviousYear(ArrayList<Transaction> transactions) {
+        ArrayList<Transaction> filteredTransactions = new ArrayList<>();
+
+        LocalDate currentDate = LocalDate.now();
+
+        LocalDate firstDayOfPreviousYear = LocalDate.of(currentDate.getYear() - 1, 1, 1);
+
+        LocalDate lastDayOfPreviousYear = LocalDate.of(currentDate.getYear() - 1, 12, 31);
+
+        for (Transaction transaction : transactions) {
+            LocalDate transactionDate = transaction.getDate();
+            if (!transactionDate.isBefore(firstDayOfPreviousYear) && !transactionDate.isAfter(lastDayOfPreviousYear)) {
+                filteredTransactions.add(transaction);
+            }
+        }
+
+        return filteredTransactions;
+    }
+
+    //Search by Vendor
+    private static ArrayList<Transaction> vendorSearch(String name) {
+        ArrayList<Transaction> vendorSearch = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getVendor().toLowerCase().contains(name.toLowerCase())) {
+                vendorSearch.add(transaction);
+            }
+        }
+        return vendorSearch;
     }
 }
