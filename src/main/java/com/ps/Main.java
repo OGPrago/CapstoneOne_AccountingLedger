@@ -5,9 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-
 
 public class Main {
 
@@ -32,7 +30,7 @@ public class Main {
 
             switch (userIn) {
                 case "D":
-                    main.addDebit();
+                    main.addDeposit();
                     break;
                 case "P":
                     main.addPayment();
@@ -176,7 +174,7 @@ public class Main {
     }
 
     //Write debit entries to transactions.txt that the user enters
-    private void addDebit() {
+    private void addDeposit() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter transaction details:");
@@ -324,7 +322,7 @@ public class Main {
     }
 
     //Search by Vendor
-    private static ArrayList<Transaction> vendorSearch(String name) {
+    static ArrayList<Transaction> vendorSearch(String name) {
         ArrayList<Transaction> vendorSearch = new ArrayList<>();
         for (Transaction transaction : transactions) {
             if (transaction.getVendor().toLowerCase().contains(name.toLowerCase())) {
@@ -333,4 +331,5 @@ public class Main {
         }
         return vendorSearch;
     }
+
 }
