@@ -11,10 +11,10 @@ public class Main {
 
     Transaction transaction;
     static ArrayList<Transaction> transactions = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
 
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         String userIn;
         Main main = new Main();
         readTransactions();
@@ -69,6 +69,7 @@ public class Main {
                                     System.out.println("\t3) Year To Date");
                                     System.out.println("\t4) Previous Year");
                                     System.out.println("\t5) Search by Vendor");
+                                    System.out.println("\t6) Custom Search");
                                     System.out.println("\t0) Back");
                                     commandReports = scanner.nextInt();
 
@@ -83,17 +84,43 @@ public class Main {
                                             break;
                                         case 3:
                                             ArrayList<Transaction> yearToDateTransactions = main.filterByYearToDate(transactions);
-                                            main.displayAllEntries(yearToDateTransactions);
+                                            displayAllEntries(yearToDateTransactions);
                                             break;
                                         case 4:
                                             ArrayList<Transaction> previousYearTransactions = main.filterByPreviousYear(transactions);
-                                            main.displayAllEntries(previousYearTransactions);
+                                            displayAllEntries(previousYearTransactions);
                                             break;
                                         case 5:
                                             System.out.println("Enter vendor to search:");
                                             scanner.nextLine();
                                             String vendor = scanner.nextLine();
                                             displayAllEntries(vendorSearch(vendor));
+                                            break;
+                                        case 6:
+                                            int searchCommand;
+
+                                            do {
+                                                System.out.println("Select a search option: ");
+                                                System.out.println("\t1) Start and End date");
+                                                System.out.println("\t2) Description");
+                                                System.out.println("\t3) Amount");
+                                                System.out.println("\t4) Back");
+                                                searchCommand = scanner.nextInt();
+
+                                                switch (searchCommand) {
+                                                    case 1:
+                                                        break;
+                                                    case 2:
+                                                        break;
+                                                    case 3:
+                                                        priceSearch();
+                                                        break;
+                                                    case 4:
+                                                        break;
+                                                    default:
+                                                        System.out.println("Command not found.");
+                                                }
+                                            } while (searchCommand != 4);
                                             break;
                                         case 0:
                                             break;
@@ -332,4 +359,24 @@ public class Main {
         return vendorSearch;
     }
 
+    //Search transaction by amount range
+    private static void priceSearch() {
+        ArrayList<Transaction> searchResults = new ArrayList<>();
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter minimum amount:");
+        float minAmount = scanner.nextFloat();
+        System.out.println("Enter maximum amount:");
+        float maxAmount = scanner.nextFloat();
+
+        for (Transaction transaction : transactions) {
+            float amount = Math.abs(transaction.getAmount());
+            if (amount >= minAmount && amount <= maxAmount) {
+                searchResults.add(transaction);
+            }
+        }
+
+        displayAllEntries(searchResults);
+    }
 }
