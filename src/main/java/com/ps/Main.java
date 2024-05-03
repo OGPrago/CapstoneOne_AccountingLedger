@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 public class Main {
 
-    Transaction transaction;
     static ArrayList<Transaction> transactions = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
 
