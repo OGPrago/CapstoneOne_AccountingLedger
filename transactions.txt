@@ -6,3 +6,5 @@
 2024-05-02|13:09:17|Hair Gel|Target|-9.99
 2024-05-02|14:29:14|Lo Mato|Amazon|-29.95
 2024-05-02|14:32:32|John Wick Collection|Amazon|-30.57
+2024-05-02|20:50:10|Payday|Paylocity|800.00
+2024-05-02|20:50:57|Tekken 8|GameStop|-70.00
