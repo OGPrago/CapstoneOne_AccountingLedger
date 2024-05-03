@@ -108,6 +108,20 @@
 
 </details>
 
+<details>
+<summary>Custom Search</summary>
+
+![CustomSearch.png](images/CustomSearch.png)
+
+<details>
+<summary>Amount</summary>
+
+![AmountSearch.png](images/AmountSearch.png)
+
+</details>
+
+</details>
+
 </details>
 
 </details>
